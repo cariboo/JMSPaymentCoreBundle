@@ -535,4 +535,15 @@ interface PluginControllerInterface
      * @return Result
      */
     function validatePaymentInstruction(PaymentInstructionInterface $paymentInstruction);
+
+    /**
+     * This method implements an asynchronous instant payment notification initiated
+     * by the payment back-end system.
+     *
+     * This method may only be invoked if the processing plugin supports notification queries.
+     *
+     * @param PaymentInstructionInterface $paymentInstruction
+     * @return float|null Returns the amount that may be consumed, or null if the amount could not be retrieved
+     */
+    function instantPaymentNotification(PaymentInstructionInterface $paymentInstruction, array $parameters);
 }

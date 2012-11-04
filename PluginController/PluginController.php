@@ -11,6 +11,7 @@ use JMS\Payment\CoreBundle\Model\FinancialTransactionInterface;
 use JMS\Payment\CoreBundle\Model\PaymentInterface;
 use JMS\Payment\CoreBundle\Model\PaymentInstructionInterface;
 use JMS\Payment\CoreBundle\Plugin\PluginInterface;
+use JMS\Payment\CoreBundle\Plugin\NotifiablePluginInterface;
 use JMS\Payment\CoreBundle\Plugin\QueryablePluginInterface;
 use JMS\Payment\CoreBundle\Plugin\Exception\ActionRequiredException as PluginActionRequiredException;
 use JMS\Payment\CoreBundle\Plugin\Exception\BlockedException as PluginBlockedException;
@@ -167,6 +168,20 @@ abstract class PluginController implements PluginControllerInterface
         } catch (PluginInvalidPaymentInstructionException $invalid) {
             return $this->onUnsuccessfulPaymentInstructionValidation($paymentInstruction, $invalid);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function instantPaymentNotification(PaymentInstructionInterface $paymentInstruction, array $parameters)
+    {
+        $plugin = $this->getPlugin($instruction->getPaymentSystemName());
+
+        if (!$plugin instanceof NotifiablePluginInterface) {
+            return null;
+        }
+
+        return $plugin->instantPaymentNotification($parameters);
     }
 
     protected function buildFinancialTransactionResult(FinancialTransactionInterface $transaction, $status, $reasonCode)

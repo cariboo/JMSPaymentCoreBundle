@@ -87,6 +87,14 @@ abstract class AbstractPlugin implements PluginInterface
     /**
      * {@inheritDoc}
      */
+    public function instantPaymentNotification(array $parameters)
+    {
+        throw new FunctionNotSupportedException('instantPaymentNotification() is not supported by this plugin.');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function validatePaymentInstruction(PaymentInstructionInterface $instruction)
     {
         throw new FunctionNotSupportedException('validatePaymentInstruction() is not supported by this plugin.');
